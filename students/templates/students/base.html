@@ -1,0 +1,60 @@
+{% load static from staticfiles %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" value="Система обліку студентів">
+		<meta viewport="content" initialscale="1">
+		<title>Сервіс обліку студентів - {% block meta_title %}{% endblock meta_title %}</title>
+		<link rel="stylesheet" type="text/css" href="{% static "css/bootstrap.min.css" %}">
+		<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
+		{% block extra_css %}{% endblock extra_css %}
+	
+	</head>
+	<body>
+		<div class="container wrap">
+			<div class="col-xs-8">
+				<h1>Сервіс обліку студентів</h1>
+			</div>
+			<div class="col-xs-4" id="group-selector">
+				<strong>Група:</strong>
+				<select>
+					<option>Усі групи</option>
+					<option>ІВТ-97, Іван Сидоренко</option>
+					<option>ПНК-97-1, Микола Пупко</option>
+				</select>
+			</div>
+			<!--Navigation-->
+			<div class="col-xs-12">
+				<ul class="nav nav-tabs">
+				  <li class="active"><a href="{% url "home" %}">Студенти</a></li>
+				  <li><a href="{% url "groups" %}">Групи</a></li>
+				  <li><a href="#">Відвідування</a></li>
+				</ul>
+			</div>
+			<!--Main Content-->
+			<div class="col-xs-12 content">
+				{% comment "Not used alert so far" %}
+				<!-- Status Message -->
+				<div class="alert alert-warning">Status Update!</div>
+				{% endcomment %}
+				
+				<h2>{% block title %}{% endblock title %}</h2>
+				{% block content %}{% endblock content %}
+			
+			</div>
+			<div class="col-xs-12 footer">
+				
+					{% block pagination %}{% endblock pagination %}
+				<div class="col-xs-12 copyright">
+					<p>&copy 2016 Сервіс обліку студентів</p>
+				</div>
+			</div>
+		</div>
+		<!-- JavaScript Section-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="{% static "js/bootstrap.min.js" %}"></script>
+		{% block extra_js %}{% endblock extra_js %}
+	</body>
+</html>
