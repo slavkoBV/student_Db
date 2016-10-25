@@ -2,7 +2,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from ..models import Student
+from ..models.students import Student
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Students views
@@ -13,6 +13,7 @@ def student_list(request):
 	# try to order student list
 	order_by = request.GET.get('order_by', 'last_name') # default ordering by last_name
 	if order_by in ('last_name', 'first_name', 'ticket'):
+
 		students = students.order_by(order_by)
 		if request.GET.get('reverse', '') == '1':
 			students = students.reverse()

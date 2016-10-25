@@ -2,45 +2,59 @@
 
 {% load static from staticfiles %}
 
-{% block meta_title %}Групи{% endblock meta_title %}
+{% block meta_title %}Іспити{% endblock meta_title %}
 
-{% block title %}Групи{% endblock title %}
+{% block title %}Іспити{% endblock title %}
 
 			{% block content %}
 				
-				<!--Start Groups List -->
+				<!--Start Exams List -->
 				<table class="table table-striped table-hover">
 				{% with order_by=request.GET.order_by reverse=request.GET.reverse %}
 					<thead>
 					<tr>
-						<th width="10%">№</th>
-						<th width="30%">
-							<a href="{% url "groups" %}?order_by=title
-								{% if order_by == 'title' and reverse != '1' %}&amp;reverse=1{% endif %}">
-								Назва
-								{% if order_by == 'title' and reverse != '1' %}
+						<th width="5%">№</th>
+						<th width="25%">
+							<a href="{% url "exams" %}?order_by=subject
+								{% if order_by == 'subject' and reverse != '1' %}&amp;reverse=1{% endif %}">
+								Предмет
+								{% if order_by == 'subject' and reverse != '1' %}
 									<img src="{% static "img/arrow_up.png" %}" height="20" width="20"/>
-								{% elif order_by == 'title' and reverse == '1'%}
+								{% elif order_by == 'subject' and reverse == '1'%}
 									<img src="{% static "img/arrow-down.png" %}" height="20" width="20"/>
-								<!-- Default ordering by title-->
+								<!-- Default ordering by subject-->
 								{% elif order_by == '' and reverse != '1' %}
 									<img src="{% static "img/arrow_up.png" %}" height="20" width="20"/>
 								{% endif %}
 							</a>
 						</th>
-						<th width="40%">Староста</th>
-						<th width="20%">Дії</th>
+						<th width="15%">Викладач</th>
+						<th width="20%">
+								<a href="{% url "exams" %}?order_by=dataAndTime
+								{% if order_by == 'dataAndTime' and reverse != '1' %}&amp;reverse=1{% endif %}">
+								Дата і час
+								{% if order_by == 'dataAndTime' and reverse != '1' %}
+									<img src="{% static "img/arrow_up.png" %}" height="20" width="20"/>
+								{% elif order_by == 'dataAndTime' and reverse == '1'%}
+									<img src="{% static "img/arrow-down.png" %}" height="20" width="20"/>
+								{% endif %}
+							</a>
+						</th>
+						<th width="10%">Група</th>
+						<th width="15%">Дії</th>
 					</tr>
 					</thead>
 					{% endwith %}
 					<tbody>
-					{% for group in groups %}
+					{% for exam in exams %}
 					<tr>
 						<td>
-							{{ forloop.counter0|add:groups.start_index }}
+							{{ forloop.counter0|add:exams.start_index }}
 						</td>
-						<td>{{ group.title }}</td>
-						<td>{{ group.leader }}</td>
+						<td>{{ exam.subject }}</td>
+						<td>{{ exam.teacher }}</td>
+						<td>{{ exam.dataAndTime|date:"d-m-Y H:i" }}</td>
+						<td>{{ exam.exam_group.title }}</td>
 						<td>
 							<div class='btn-group'>
 								<button type="button" class="btn btn-default dropdown-toggle" 
@@ -49,13 +63,10 @@
 								</button>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="#">Відвідування</a>
+										<a href="#">Редагувати</a>
 									</li>
 									<li>
-										<a href="{% url "groups_edit" group.id %}">Редагувати</a>
-									</li>
-									<li>
-										<a href="{% url "groups_delete" group.id %}">Видалити</a>
+										<a href="#">Видалити</a>
 									</li>
 								</ul>
 							</div>
@@ -69,11 +80,11 @@
 			
 			{% block pagination %}				
 			{% with order_by=request.GET.order_by reverse=request.GET.reverse %}				
-				{% if groups.has_other_pages %}
+				{% if exams.has_other_pages %}
 					<ul class="pagination">
 						<li>
-							{% if groups.has_previous %}
-								<a href="{% url "groups" %}?page={{ groups.previous_page_number }}&amp;
+							{% if exams.has_previous %}
+								<a href="{% url "exams" %}?page={{ exams.previous_page_number }}&amp;
 								order_by={{ order_by }}&amp;reverse={{ reverse }}">
 									&laquo;
 								</a>
@@ -81,14 +92,14 @@
 								<li><span>&laquo;</span></li>
 							{% endif %}
 						</li>
-						{% for i in groups.paginator.page_range %}
-							{% if i == groups.number %}
+						{% for i in exams.paginator.page_range %}
+							{% if i == exams.number %}
 								<li class="active">
 									<span>{{ i }}</span>
 								</li>
 							{% else %}
 								<li>
-									<a href="{% url "groups" %}?page={{ i }}&amp;
+									<a href="{% url "exams" %}?page={{ i }}&amp;
 									order_by={{ order_by }}&amp;reverse={{ reverse }}">
 									{{ i }}
 									</a>
@@ -96,8 +107,8 @@
 							{% endif%}
 						{% endfor %}
 						<li>
-							{% if groups.has_next %}
-								<a href="{% url "groups" %}?page={{ groups.next_page_number }}&amp;
+							{% if exams.has_next %}
+								<a href="{% url "exams" %}?page={{ exams.next_page_number }}&amp;
 								order_by={{ order_by }}&amp;reverse={{ reverse }}">
 								&raquo;
 								</a>

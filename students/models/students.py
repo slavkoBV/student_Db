@@ -30,13 +30,18 @@ class Student(models.Model):
 		verbose_name=u'День народження',
 		null=True)
 
+	student_group = models.ForeignKey('Group',
+		verbose_name=u'Група',
+		blank=False,
+		null=True,
+		on_delete = models.PROTECT)
+
 	photo = models.ImageField(
 		blank=True,
 		verbose_name=u'Фото',
 		null=True)
 
 	ticket = models.IntegerField(
-		max_length=256,
 		blank=False,
 		verbose_name=u'Білет')
 
