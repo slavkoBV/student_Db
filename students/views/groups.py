@@ -8,10 +8,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Groups views
 
 def group_list(request):
-	groups = Group.objects.all()
-
-	# try to order student list
-	order_by = request.GET.get('order_by', 'title')
+	groups = Group.objects.order_by('title')
+	# try to order groups list
+	order_by = request.GET.get('order_by', '')
 	if order_by == 'title':
 		groups = groups.order_by(order_by)
 		if request.GET.get('reverse', '') == '1':

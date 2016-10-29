@@ -6,9 +6,12 @@
 
 {% block title %}Студенти{% endblock title %}
 
+		{% block add_Student %}
+		<!-- Add Student Button -->
+			<a class="btn btn-primary add-student" href="{% url "students_add" %}">Додати Студента</a>
+		{% endblock add_Student %}
+			
 			{% block content %}
-				<!-- Add Student Button -->
-				<a class="btn btn-primary add-student" href="{% url "students_add" %}">Додати Студента</a>
 				<!--Start Students List -->
 				<table class="table table-striped table-hover">
 				{% with order_by=request.GET.order_by reverse=request.GET.reverse %}

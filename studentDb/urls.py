@@ -17,7 +17,7 @@ urlpatterns = [
 	url(r'^groups/(?P<gid>\d+)/edit/$', groups.groups_edit, name='groups_edit'),
   	url(r'^groups/(?P<gid>\d+)/delete/$', groups.groups_delete, name='groups_delete'),
 
-  	# Ec\xams url patterns:
+  	# Exams url patterns:
   	url(r'^exams$', exams.exams_list, name='exams'),
 
     url(r'^admin/', include(admin.site.urls)),

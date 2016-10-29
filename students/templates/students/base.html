@@ -37,12 +37,22 @@
 			</div>
 			<!--Main Content-->
 			<div class="col-xs-12 content">
-				{% comment "Not used alert so far" %}
-				<!-- Status Message -->
-				<div class="alert alert-warning">Status Update!</div>
-				{% endcomment %}
 				
-				<h2>{% block title %}{% endblock title %}</h2>
+				<!-- Status Message -->
+				{% block status_message %}
+					{% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'warning' %}warning{% elif message.tags == 'success' %}success{% else %}danger{% endif %}" role="alert">{{ message }}</div>
+                        {% endfor %}
+                	{% endif %}
+				{% endblock status_message %}
+
+				<div class="col-xs-2 title">
+					<h2>{% block title %}{% endblock title %}</h2>
+				</div>
+				<div class="col-xs-4">
+					{% block add_Student %}{% endblock add_Student %}
+				</div>
 				{% block content %}{% endblock content %}
 			
 			</div>
