@@ -57,7 +57,7 @@
 			<label for="photo" class="col-sm-2 control-label">Фото</label>
 			<div class="col-sm-10">
 				<input type="file" value="" 
-				 name="photo" id="photo" class="form-control" />
+				 name="photo" id="photo" class="" />
 				 <span class="help-block">{{ errors.photo }}</span>
 			 </div>
 		</div>
@@ -65,7 +65,7 @@
 			<label for="ticket" class="col-sm-2 control-label">Білет*</label>
 			<div class="col-sm-10">
 				<input type="text" value="{{request.POST.ticket}}"
-				 name="ticket" id="ticket" class="form-control" />
+				 name="ticket" id="ticket" placeholder="Введіть номер студентського білета" class="form-control" />
 				 <span class="help-block">{{ errors.ticket }}</span>
 			 </div>
 		</div>

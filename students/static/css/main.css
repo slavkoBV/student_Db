@@ -39,8 +39,8 @@ th, td {
 }
 
 .title {
-	width: 300px;
-	padding-bottom: 30px;
+	width: 350px;
+	padding-bottom: 0px;
 
 }
 
@@ -54,6 +54,7 @@ th, td {
 }
 .content .add-student {
 	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .footer {

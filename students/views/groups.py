@@ -8,7 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Groups views
 
 def group_list(request):
-	groups = Group.objects.order_by('title')
+	groups = Group.objects.all().order_by('title')
 	# try to order groups list
 	order_by = request.GET.get('order_by', '')
 	if order_by == 'title':

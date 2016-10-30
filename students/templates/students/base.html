@@ -33,6 +33,7 @@
 				  <li {% if "groups" in request.path %}class="active"{% endif %}><a href="{% url "groups" %}">Групи</a></li>
 				  <li {% if "exams" in request.path %}class="active"{% endif %}><a href="{% url "exams" %}">Іспити</a></li>
 				  <li {% if "journal" in request.path %}class="active"{% endif %}><a href="#">Відвідування</a></li>
+				  <li {% if "contact-admin" in request.path %}class="active"{% endif %}><a href="{% url "contact_admin" %}">Контакт</a></li>
 				</ul>
 			</div>
 			<!--Main Content-->

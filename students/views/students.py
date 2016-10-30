@@ -5,9 +5,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
+
 from datetime import datetime
 from PIL import Image
 
+from django.forms import ModelForm
+from django.views.generic import UpdateView, DeleteView
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from crispy_forms.bootstrap import FormActions
 
 from ..models.students import Student
 from ..models.groups import Group
@@ -95,7 +102,7 @@ def students_add(request):
 					image = Image.open(photo)
 					if image.format not in ('JPG', 'PNG', 'JPEG'):
 						errors['photo'] = u"Формат файла некоректний, має бути jpg або png"
-					elif image.size > 2*1024*1024:
+					elif photo.size > 2*1024*1024:
 						errors['photo'] = u"Розмір файлу більше 2 Мб"
 					else:
 						data['photo'] = photo
@@ -122,10 +129,61 @@ def students_add(request):
 		# initial form render
 		return render(request, 'students/students_add.html', {'groups':groups})
 
+# Student Edit View ##########################################################################
+class StudentUpdateForm(ModelForm):
+	class Meta:
+		model = Student
+		fields = ['first_name', 'last_name', 'middle_name', 'birthday', 
+			'photo', 'ticket', 'student_group', 'notes']
 
-def students_edit(request, sid):
-	return HttpResponse('<h1>Edit Student %s</h1>' % sid)
+	def __init__(self, *args, **kwargs):
+		super(StudentUpdateForm, self).__init__(*args, **kwargs)
 
+		self.helper = FormHelper(self)
 
-def students_delete(request, sid):
-	return HttpResponse('<h1>Delete Student %s</h1>' % sid)
+		# set form tag attributes
+		self.helper.form_action = reverse('students_edit', kwargs = {'pk': kwargs['instance'].id})
+		self.helper.form_method = 'post'
+		self.helper.form_class = 'form-horizontal'
+
+		# set form field properties
+		self.helper.help_text_inline = True
+		self.helper.html5_required = True
+		self.helper.label_class = 'col-sm-2 control-label'
+		self.helper.field_class = 'col-sm-10'
+
+		# add buttons
+		self.helper.add_input(Submit('add_button', u'Зберегти', css_class="btn btn-primary"))
+		self.helper.add_input(Submit('cancel_button', u'Скасувати', css_class="btn btn-link"))
+
+class StudentUpdateView(UpdateView):
+	model = Student
+	template_name = 'students/students_edit.html'
+	form_class = StudentUpdateForm
+
+	def get_success_url(self):
+		return reverse('home')
+
+	def post(self, request, *args, **kwargs):
+		if request.POST.get('cancel_button'):
+			messages.warning(request, u'Редагування студента <%s> скасовано!' % request.POST['last_name'])
+			return HttpResponseRedirect(reverse('home'))
+		else:
+			messages.success(request, u'Студент <%s> успішно збережений' % request.POST['last_name'])
+			return super(StudentUpdateView, self).post(request, *args, **kwargs)
+
+# Student Delete View ########################################################################
+def students_delete(request, pk):
+
+	del_student = Student.objects.get(id=pk)
+
+	if request.method == 'POST':
+		if request.POST.get('delete_button') is not None:
+			del_student.delete()
+			messages.success(request, u'Студента %s успішно видалено' % del_student.last_name)
+			return HttpResponseRedirect(reverse('home'))
+		else:
+			messages.warning(request, u'Видалення студента %s відмінено' % del_student.last_name)
+			return HttpResponseRedirect(reverse('home'))
+	else:
+		return render(request, 'students/students_confirm_delete.html', {'del_student':del_student})	
