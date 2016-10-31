@@ -1,0 +1,30 @@
+{% extends 'students/base.html' %}
+
+{% load static from staticfiles %}
+
+{% block meta_title %}Видалення Групи{% endblock meta_title %}
+
+{% block title %}Видалення Групи{% endblock title %}
+
+{% block status_message %}
+	
+{% endblock status_message %}
+
+{% block content %}
+
+<div class="col-xs-8 add_form">
+	<form action="{% url "groups_delete" del_group.id %}" method="post">
+	{% csrf_token %}
+	<p>Ви дійсно бажаєте видалити групу "{{ del_group.title }}"?</p> 
+	<input type="submit" value="Так" name="delete_button"
+			class="btn btn-danger">
+	<input type="submit" value="Скасувати" name="cancel_button"
+			class="btn btn-link">
+	</form>
+</div>
+
+{% endblock content %}
+
+{% block pagination %}
+<div class="withoutPagination"></div>
+{% endblock %}

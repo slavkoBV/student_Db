@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from students.views import students, groups, exams, contact_admin
 from students.views.students import StudentUpdateView
+from students.views.groups import GroupUpdateView
 from .settings import DEBUG, MEDIA_ROOT
 from django.views.static import serve
 
@@ -15,8 +16,8 @@ urlpatterns = [
 
     # Groups url patterns:
     url(r'^groups$', groups.group_list, name='groups'),
-	url(r'^groups/(?P<gid>\d+)/edit/$', groups.groups_edit, name='groups_edit'),
-  	url(r'^groups/(?P<gid>\d+)/delete/$', groups.groups_delete, name='groups_delete'),
+	url(r'^groups/(?P<pk>\d+)/edit/$', GroupUpdateView.as_view(), name='groups_edit'),
+  	url(r'^groups/(?P<pk>\d+)/delete/$', groups.groups_delete, name='groups_delete'),
 
   	# Exams url patterns:
   	url(r'^exams$', exams.exams_list, name='exams'),

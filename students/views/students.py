@@ -5,11 +5,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 
 from datetime import datetime
 from PIL import Image
 
-from django.forms import ModelForm
+from django.forms import ModelForm, ValidationError
 from django.views.generic import UpdateView, DeleteView
 
 from crispy_forms.helper import FormHelper
@@ -19,7 +20,6 @@ from crispy_forms.bootstrap import FormActions
 from ..models.students import Student
 from ..models.groups import Group
 
-# Students views
 # List of Students ###############################################################
 def student_list(request):
 	students = Student.objects.all().order_by('last_name') # default ordering by last_name
@@ -156,20 +156,30 @@ class StudentUpdateForm(ModelForm):
 		self.helper.add_input(Submit('add_button', u'Зберегти', css_class="btn btn-primary"))
 		self.helper.add_input(Submit('cancel_button', u'Скасувати', css_class="btn btn-link"))
 
-class StudentUpdateView(UpdateView):
+	def clean_student_group(self):
+	
+		groups = Group.objects.filter(leader=self.instance)
+		if len(groups) > 0 and self.cleaned_data['student_group'] != groups[0]:
+			raise ValidationError(u'Студент є старостою іншої групи', code='invalid')
+		return self.cleaned_data['student_group']
+
+class StudentUpdateView(SuccessMessageMixin, UpdateView):
 	model = Student
 	template_name = 'students/students_edit.html'
 	form_class = StudentUpdateForm
+	success_message = u"Студент %(calc_last_name)s успішно збережений"
 
 	def get_success_url(self):
 		return reverse('home')
+
+	def get_success_message(self, cleaned_data):
+		return self.success_message % dict(cleaned_data, calc_last_name=self.object.last_name,)
 
 	def post(self, request, *args, **kwargs):
 		if request.POST.get('cancel_button'):
 			messages.warning(request, u'Редагування студента <%s> скасовано!' % request.POST['last_name'])
 			return HttpResponseRedirect(reverse('home'))
 		else:
-			messages.success(request, u'Студент <%s> успішно збережений' % request.POST['last_name'])
 			return super(StudentUpdateView, self).post(request, *args, **kwargs)
 
 # Student Delete View ########################################################################
