@@ -6,10 +6,10 @@
 
 {% block title %}Студенти{% endblock title %}
 
-		{% block add_Student %}
+		{% block add_New %}
 		<!-- Add Student Button -->
-			<a class="btn btn-primary add-student" href="{% url "students_add" %}">Додати Студента</a>
-		{% endblock add_Student %}
+			<a class="btn btn-primary add-new" href="{% url "students_add" %}">Додати Студента</a>
+		{% endblock add_New %}
 			
 			{% block content %}
 				<!--Start Students List -->
@@ -85,7 +85,7 @@
 								</button>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="#">Відвідування</a>
+										<a href="{% url "journal" student.id %}">Відвідування</a>
 									</li>
 									<li>
 										<a href="{% url "students_edit" student.id %}">Редагувати</a>
@@ -103,47 +103,8 @@
 			{% endblock content %}
 			</div>
 			
-			{% block pagination %}
-			{% with order_by=request.GET.order_by reverse=request.GET.reverse %}				
-				{% if students.has_other_pages %}
-					<ul class="pagination">
-						<li>
-							{% if students.has_previous %}
-								<a href="{% url "home" %}?page={{ students.previous_page_number }}&amp;
-								order_by={{ order_by }}&amp;reverse={{ reverse }}">
-									&laquo;
-								</a>
-							{% else %}
-								<li><span>&laquo;</span></li>
-							{% endif %}
-						</li>
-						{% for i in students.paginator.page_range %}
-							{% if i == students.number %}
-								<li class="active">
-									<span>{{ i }}</span>
-								</li>
-							{% else %}
-								<li>
-									<a href="{% url "home" %}?page={{ i }}&amp;
-									order_by={{ order_by }}&amp;reverse={{ reverse }}">
-									{{ i }}
-									</a>
-								</li>
-							{% endif%}
-						{% endfor %}
-						<li>
-							{% if students.has_next %}
-								<a href="{% url "home" %}?page={{ students.next_page_number }}&amp;
-								order_by={{ order_by }}&amp;reverse={{ reverse }}">
-								&raquo;
-								</a>
-							{% else %}
-								<li><span>&raquo;</span></li>
-							{% endif %}
-							</li>
-						</ul>
-				{% else %}
-					<div class="withoutPagination"></div>
-				{% endif %}
-				{% endwith %}
-	  		{% endblock pagination %}
+	{% block pagination %}
+		{% with object_list=students %}
+				{% include "students/pagination.html" %}
+		{% endwith %}
+	{% endblock pagination %}

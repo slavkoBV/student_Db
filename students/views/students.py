@@ -20,9 +20,17 @@ from crispy_forms.bootstrap import FormActions
 from ..models.students import Student
 from ..models.groups import Group
 
+from ..util import paginate, get_current_group
+
 # List of Students ###############################################################
 def student_list(request):
-	students = Student.objects.all().order_by('last_name') # default ordering by last_name
+	current_group = get_current_group(request)
+
+	if current_group:
+		students = Student.objects.filter(student_group=current_group)
+	else:
+		students = Student.objects.all().order_by('last_name') # default ordering by last_name
+	
 	# try to order student list
 	order_by = request.GET.get('order_by', '')
 	if order_by in ('last_name', 'first_name', 'ticket'):
@@ -32,16 +40,9 @@ def student_list(request):
 			students = students.reverse()
 		
 	# paginate of students list
-	paginator = Paginator(students, 3)
-	page = request.GET.get('page')
-	try:
-		students = paginator.page(page)
-	except PageNotAnInteger:
-		students = paginator.page(1)
-	except EmptyPage:
-		students = paginator.page(paginator.num_pages)
+	context = paginate(students, 5, request, {'students':students}, var_name='students')
 
-	return render(request, 'students/students_list.html', {'students':students})
+	return render(request, 'students/students_list.html', context)
 
 # Add new Student #################################################################
 def students_add(request):

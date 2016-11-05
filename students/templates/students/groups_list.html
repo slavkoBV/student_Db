@@ -67,47 +67,8 @@
 			{% endblock content %}
 			</div>
 			
-			{% block pagination %}				
-			{% with order_by=request.GET.order_by reverse=request.GET.reverse %}				
-				{% if groups.has_other_pages %}
-					<ul class="pagination">
-						<li>
-							{% if groups.has_previous %}
-								<a href="{% url "groups" %}?page={{ groups.previous_page_number }}&amp;
-								order_by={{ order_by }}&amp;reverse={{ reverse }}">
-									&laquo;
-								</a>
-							{% else %}
-								<li><span>&laquo;</span></li>
-							{% endif %}
-						</li>
-						{% for i in groups.paginator.page_range %}
-							{% if i == groups.number %}
-								<li class="active">
-									<span>{{ i }}</span>
-								</li>
-							{% else %}
-								<li>
-									<a href="{% url "groups" %}?page={{ i }}&amp;
-									order_by={{ order_by }}&amp;reverse={{ reverse }}">
-									{{ i }}
-									</a>
-								</li>
-							{% endif%}
-						{% endfor %}
-						<li>
-							{% if groups.has_next %}
-								<a href="{% url "groups" %}?page={{ groups.next_page_number }}&amp;
-								order_by={{ order_by }}&amp;reverse={{ reverse }}">
-								&raquo;
-								</a>
-							{% else %}
-								<li><span>&raquo;</span></li>
-							{% endif %}
-							</li>
-						</ul>
-				{% else %}
-					<div class="withoutPagination"></div>
-				{% endif %}
-				{% endwith %}
-	  		{% endblock pagination %}
+	{% block pagination %}
+		{% with object_list=groups %}
+				{% include "students/pagination.html" %}
+		{% endwith %}
+	{% endblock pagination %}

@@ -52,7 +52,7 @@ th, td {
 	margin-top: 10px;
 	margin-bottom: 0px;
 }
-.content .add-student {
+.content .add-new {
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
@@ -85,4 +85,15 @@ textarea,
 select,
 input {
 max-width: 300px;
+}
+
+td.day-box,
+th.day-header {
+	padding: 5px !important;
+	vertical-align: middle !important;
+	text-align: center; 
+}
+
+#ajax-progress-indicator {
+	display: none;
 }

@@ -1,0 +1,30 @@
+{% extends 'students/base.html' %}
+
+{% load static from staticfiles %}
+
+{% block meta_title %}Видалення Іспиту{% endblock meta_title %}
+
+{% block title %}Видалення Іспиту{% endblock title %}
+
+{% block status_message %}
+	
+{% endblock status_message %}
+
+{% block content %}
+
+<div class="col-xs-8 add_form">
+	<form action="{% url "exams_delete" del_exam.id %}" method="post">
+	{% csrf_token %}
+	<p>Ви дійсно бажаєте видалити іспит з "{{ del_exam.subject }}"?</p> 
+	<input type="submit" value="Так" name="delete_button"
+			class="btn btn-danger">
+	<input type="submit" value="Скасувати" name="cancel_button"
+			class="btn btn-link">
+	</form>
+</div>
+
+{% endblock content %}
+
+{% block pagination %}
+<div class="withoutPagination"></div>
+{% endblock %}

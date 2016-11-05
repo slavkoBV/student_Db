@@ -20,9 +20,12 @@
 			<div class="col-xs-4" id="group-selector">
 				<strong>Група:</strong>
 				<select>
-					<option>Усі групи</option>
-					<option>ІВТ-97, Іван Сидоренко</option>
-					<option>ПНК-97-1, Микола Пупко</option>
+					<option value="">Усі групи</option>
+					{% for group in GROUPS %}
+					<option value="{{ group.id }}"{% if group.selected %}selected="1"{% endif %}>
+						{{ group.title }}{% if group.leader %}, {{ group.leader }}{% endif %}
+					</option>
+					{% endfor %}
 				</select>
 			</div>
 			<!--Navigation-->
@@ -32,7 +35,7 @@
 				  <li {% if request.path == home %}class="active"{% endif %}><a href="{% url "home" %}">Студенти</a></li>
 				  <li {% if "groups" in request.path %}class="active"{% endif %}><a href="{% url "groups" %}">Групи</a></li>
 				  <li {% if "exams" in request.path %}class="active"{% endif %}><a href="{% url "exams" %}">Іспити</a></li>
-				  <li {% if "journal" in request.path %}class="active"{% endif %}><a href="#">Відвідування</a></li>
+				  <li {% if "journal" in request.path %}class="active"{% endif %}><a href="{% url "journal" %}">Відвідування</a></li>
 				  <li {% if "contact-admin" in request.path %}class="active"{% endif %}><a href="{% url "contact_admin" %}">Контакт</a></li>
 				</ul>
 			</div>
@@ -52,7 +55,7 @@
 					<h2>{% block title %}{% endblock title %}</h2>
 				</div>
 				<div class="col-xs-4">
-					{% block add_Student %}{% endblock add_Student %}
+					{% block add_New %}{% endblock add_New %}
 				</div>
 				{% block content %}{% endblock content %}
 			
@@ -67,7 +70,9 @@
 		</div>
 		<!-- JavaScript Section-->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="{{PORTAL_URL}}{% static "js/jquery.cookie.js" %}"></script>
 		<script src="{{PORTAL_URL}}{% static "js/bootstrap.min.js" %}"></script>
+		<script src="{{PORTAL_URL}}{% static "js/main.js" %}"></script>
 		{% block extra_js %}{% endblock extra_js %}
 	</body>
 </html>

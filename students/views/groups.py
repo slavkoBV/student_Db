@@ -3,8 +3,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from ..models.groups import Group
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -18,11 +16,19 @@ from crispy_forms.bootstrap import FormActions
 from ..models.students import Student
 from ..models.groups import Group
 
+from ..util import paginate, get_current_group
+
 
 # List of Groups ######################################################
 
 def group_list(request):
-	groups = Group.objects.all().order_by('title')
+	current_group = get_current_group(request)
+
+	if current_group:
+		groups = Group.objects.filter(id=current_group.id)
+	else:
+		groups = Group.objects.all().order_by('title')
+	
 	# try to order groups list
 	order_by = request.GET.get('order_by', '')
 	if order_by == 'title':
@@ -31,16 +37,9 @@ def group_list(request):
 			groups = groups.reverse()
 		
 	# paginate of groups list
-	paginator = Paginator(groups, 3)
-	page = request.GET.get('page')
-	try:
-		groups = paginator.page(page)
-	except PageNotAnInteger:
-		groups = paginator.page(1)
-	except EmptyPage:
-		groups = paginator.page(paginator.num_pages)
+	context = paginate(groups, 3, request, {'groups':groups}, var_name='groups')
 
-	return render(request, 'students/groups_list.html', {'groups':groups})
+	return render(request, 'students/groups_list.html', context)
 
 # Group Edit View ###########################################################
 class GroupUpdateForm(ModelForm):

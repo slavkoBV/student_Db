@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from django.conf.urls import include, url
 from django.contrib import admin
 from students.views import students, groups, exams, contact_admin
 from students.views.students import StudentUpdateView
 from students.views.groups import GroupUpdateView
+from students.views.exams import ExamUpdateView
+from students.views.journal import JournalView
 from .settings import DEBUG, MEDIA_ROOT
 from django.views.static import serve
 
@@ -16,11 +20,17 @@ urlpatterns = [
 
     # Groups url patterns:
     url(r'^groups$', groups.group_list, name='groups'),
-	url(r'^groups/(?P<pk>\d+)/edit/$', GroupUpdateView.as_view(), name='groups_edit'),
+    url(r'^groups/(?P<pk>\d+)/edit/$', GroupUpdateView.as_view(), name='groups_edit'),
   	url(r'^groups/(?P<pk>\d+)/delete/$', groups.groups_delete, name='groups_delete'),
 
   	# Exams url patterns:
   	url(r'^exams$', exams.exams_list, name='exams'),
+    url(r'^exams/add/$', exams.exams_add, name='exams_add'),
+    url(r'^exams/(?P<pk>\d+)/edit/$', ExamUpdateView.as_view(), name='exams_edit'),
+    url(r'^exams/(?P<pk>\d+)/delete/$', exams.exams_delete, name='exams_delete'),
+
+    # Journal url patterns:
+    url(r'^journal/(?P<pk>\d+)?/?$', JournalView.as_view(), name='journal'),
 
     # Contact Admin url:
     url(r'^contact-admin/$', contact_admin.contact_admin, name='contact_admin'),

@@ -6,6 +6,11 @@
 
 {% block title %}Іспити{% endblock title %}
 
+		{% block add_New %}
+		<!-- Add Exam Button -->
+			<a class="btn btn-primary add-new" href="{% url "exams_add" %}">Додати Іспит</a>
+		{% endblock add_New %}
+
 			{% block content %}
 				
 				<!--Start Exams List -->
@@ -63,10 +68,10 @@
 								</button>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="#">Редагувати</a>
+										<a href="{% url "exams_edit" exam.id %}">Редагувати</a>
 									</li>
 									<li>
-										<a href="#">Видалити</a>
+										<a href="{% url "exams_delete" exam.id %}">Видалити</a>
 									</li>
 								</ul>
 							</div>
@@ -77,48 +82,10 @@
 				</table>
 			{% endblock content %}
 			</div>
-			
-			{% block pagination %}				
-			{% with order_by=request.GET.order_by reverse=request.GET.reverse %}				
-				{% if exams.has_other_pages %}
-					<ul class="pagination">
-						<li>
-							{% if exams.has_previous %}
-								<a href="{% url "exams" %}?page={{ exams.previous_page_number }}&amp;
-								order_by={{ order_by }}&amp;reverse={{ reverse }}">
-									&laquo;
-								</a>
-							{% else %}
-								<li><span>&laquo;</span></li>
-							{% endif %}
-						</li>
-						{% for i in exams.paginator.page_range %}
-							{% if i == exams.number %}
-								<li class="active">
-									<span>{{ i }}</span>
-								</li>
-							{% else %}
-								<li>
-									<a href="{% url "exams" %}?page={{ i }}&amp;
-									order_by={{ order_by }}&amp;reverse={{ reverse }}">
-									{{ i }}
-									</a>
-								</li>
-							{% endif%}
-						{% endfor %}
-						<li>
-							{% if exams.has_next %}
-								<a href="{% url "exams" %}?page={{ exams.next_page_number }}&amp;
-								order_by={{ order_by }}&amp;reverse={{ reverse }}">
-								&raquo;
-								</a>
-							{% else %}
-								<li><span>&raquo;</span></li>
-							{% endif %}
-							</li>
-						</ul>
-				{% else %}
-					<div class="withoutPagination"></div>
-				{% endif %}
-				{% endwith %}
-	  		{% endblock pagination %}
+		
+
+	{% block pagination %}
+		{% with object_list=exams %}
+				{% include "students/pagination.html" %}
+		{% endwith %}
+	{% endblock pagination %}
