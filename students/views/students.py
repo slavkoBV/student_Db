@@ -15,7 +15,7 @@ from django.views.generic import UpdateView, DeleteView
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.bootstrap import FormActions, AppendedText
 
 from ..models.students import Student
 from ..models.groups import Group
@@ -151,7 +151,10 @@ class StudentUpdateForm(ModelForm):
 		self.helper.help_text_inline = True
 		self.helper.html5_required = True
 		self.helper.label_class = 'col-sm-2 control-label'
-		self.helper.field_class = 'col-sm-10'
+		self.helper.field_class = 'col-sm-10 input-form'
+
+		# add calendar icon to birthday input field
+		self.helper.layout[3] = AppendedText("birthday", '<span class="glyphicon glyphicon-calendar"></span>', active=True)
 
 		# add buttons
 		self.helper.add_input(Submit('add_button', u'Зберегти', css_class="btn btn-primary"))

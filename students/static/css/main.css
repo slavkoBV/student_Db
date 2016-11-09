@@ -84,7 +84,11 @@ th, td {
 textarea,
 select,
 input {
-max-width: 300px;
+max-width: 320px;
+}
+
+.input-form {
+max-width: 320px;	
 }
 
 td.day-box,
