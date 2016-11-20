@@ -93,7 +93,10 @@ function initEditStudentForm(form, modal){
 	initDateFields();
 
 	form.find('input[name="cancel_button"]').click(function(event){
-		modal.modal('hide');
+		modal.find('.modal-body').html(html.find('.alert'));
+		setTimeout(function(){
+					location.reload(true);
+				}, 500);
 		return false;
 	});
 

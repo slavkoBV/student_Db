@@ -1,14 +1,16 @@
 {% extends "students/base.html" %}
 
+{% load i18n %}
+
 {% load static from staticfiles %}
 
-{% block meta_title %}Студенти{% endblock meta_title %}
+{% block meta_title %}{% trans "Students" %}{% endblock meta_title %}
 
-{% block title %}Студенти{% endblock title %}
+{% block title %}{% trans "Students" %}{% endblock title %}
 
 		{% block add_New %}
 		<!-- Add Student Button -->
-			<a class="btn btn-primary add-new" href="{% url "students_add" %}">Додати Студента</a>
+			<a class="btn btn-primary add-new" href="{% url "students_add" %}">{% trans "Add Student" %}</a>
 		{% endblock add_New %}
 			
 			{% block content %}
@@ -18,11 +20,11 @@
 					<thead>
 					<tr>
 						<th width="5%">№</th>
-						<th width="15%">Фото</th>
+						<th width="15%">{% trans "Photo" %}</th>
 						<th width="25%">
 							<a href="{% url "home" %}?order_by=last_name
 								{% if order_by == 'last_name' and reverse != '1' %}&amp;reverse=1{% endif %}">
-								Прізвище
+								{% trans "Last name" %}
 								{% if order_by == 'last_name' and reverse != '1' %}
 									<img src="{% static "img/arrow_up.png" %}" height="20" width="20"/>
 								{% elif order_by == 'last_name' and reverse == '1'%}
@@ -36,7 +38,7 @@
 						<th width="20%">
 							<a href="{% url "home" %}?order_by=first_name
 								{% if order_by == 'first_name' and reverse != '1' %}&amp;reverse=1{% endif %}">
-								Ім'я
+								{% trans "First name" %}
 								{% if order_by == 'first_name' and reverse != '1' %}
 									<img src="{% static "img/arrow_up.png" %}" height="20" width="20"/>
 								{% elif order_by == 'first_name' and reverse == '1'%}
@@ -47,7 +49,7 @@
 						<th width="15">
 							<a href="{% url "home" %}?order_by=ticket
 								{% if order_by == 'ticket' and reverse != '1' %}&amp;reverse=1{% endif %}">
-								№ білету
+								№ {% trans "ticket" %}
 								{% if order_by == 'ticket' and reverse != '1' %}
 									<img src="{% static "img/arrow_up.png" %}" height="20" width="20"/>
 								{% elif order_by == 'ticket' and reverse == '1'%}
@@ -55,7 +57,7 @@
 								{% endif %}
 							</a>
 						</th>
-						<th width="20%">Дії</th>
+						<th width="20%">{% trans "Actions" %}</th>
 					</tr>
 					</thead>
 					{% endwith %}
@@ -81,17 +83,17 @@
 							<div class='btn-group'>
 								<button type="button" class="btn btn-default dropdown-toggle" 
 									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Дія <span class="caret"></span>
+									{% trans "Action" %}<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="{% url "journal" student.id %}">Відвідування</a>
+										<a href="{% url "journal" student.id %}">{% trans "Journal" %}</a>
 									</li>
 									<li>
-										<a href="{% url "students_edit" student.id %}" class="student-edit-form-link">Редагувати</a>
+										<a href="{% url "students_edit" student.id %}" class="student-edit-form-link">{% trans "Edit" %}</a>
 									</li>
 									<li>
-										<a href="{% url "students_delete" student.id %}">Видалити</a>
+										<a href="{% url "students_delete" student.id %}">{% trans "Delete" %}</a>
 									</li>
 								</ul>
 							</div>

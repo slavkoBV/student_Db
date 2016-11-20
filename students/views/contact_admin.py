@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 
 from django.shortcuts import render
 from django import forms
@@ -10,7 +11,8 @@ from django.contrib import messages
 from studentDb.settings import ADMIN_EMAIL
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, ButtonHolder
+
 
 class ContactForm(forms.Form):
 
@@ -29,10 +31,12 @@ class ContactForm(forms.Form):
 		self.helper.help_text_inline = True
 		self.helper.html5_required = True
 		self.helper.label_class = 'col-sm-3 control-label'
-		self.helper.field_class = 'col-sm-9'
+		self.helper.field_class = 'col-sm-6'
 
 		# form buttons
+
 		self.helper.add_input(Submit('send_button', u'Надіслати'))
+		
 
 	from_email = forms.EmailField(
 		label=u'Ваша Емейл Адреса')
@@ -60,6 +64,8 @@ def contact_admin(request):
 			except Exception:
 				message = u'Під час відправки листа виникла помилка'
 				messages.warning(request, message)
+				logger = logging.getLogger(__name__)
+				logger.exception(message)
 			else:
 				message = u'Повідомлення успішно надіслане!'
 				messages.success(request, message)

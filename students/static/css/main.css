@@ -101,3 +101,8 @@ th.day-header {
 #ajax-progress-indicator {
 	display: none;
 }
+
+.form-actions {
+	max-width: 320px;
+	margin-left: 180px;
+}

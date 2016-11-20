@@ -126,8 +126,8 @@ class ExamUpdateForm(ModelForm):
 		# set form field properties
 		self.helper.help_text_inline = True
 		self.helper.html5_required = True
-		self.helper.label_class = 'col-sm-2 control-label'
-		self.helper.field_class = 'col-sm-10 input-form'
+		self.helper.label_class = 'col-sm-3 control-label'
+		self.helper.field_class = 'col-sm-6 input-form'
 
 		# add calendar icon to birthday input field
 		self.helper.layout[1] = AppendedText("dataAndTime", '<span class="glyphicon glyphicon-calendar"></span>', active=True)

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -12,6 +10,7 @@ from PIL import Image
 
 from django.forms import ModelForm, ValidationError
 from django.views.generic import UpdateView, DeleteView
+from django.utils.translation import ugettext as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -59,40 +58,40 @@ def students_add(request):
 
 			first_name = request.POST.get('first_name', '').strip()
 			if not first_name:
-				errors['first_name'] = u"Ім'я є обов'язковим"
+				errors['first_name'] = _(u"First Name is required")
 			else:
 				data['first_name'] = first_name
 
 			last_name = request.POST.get('last_name', '').strip()
 			if not last_name:
-				errors['last_name'] = u"Прізвище є обов'язковим"
+				errors['last_name'] = _(u"Last Name is required")
 			else:
 				data['last_name'] = last_name
 
 			birthday = request.POST.get('birthday', '').strip()
 			if not birthday:
-				errors['birthday'] = u"Дата народження є обов'язковою"
+				errors['birthday'] = _(u"Birthday is required")
 			else:
 				try:
 					datetime.strptime(birthday, '%Y-%m-%d')
 				except Exception:
-					errors['birthday'] = u"Введіть коректний формат дати (Напр. 1980-12-30)"
+					errors['birthday'] = _(u"Input correct date format(Ex. 1980-12-30)")
 				else:
 					data['birthday'] = birthday
 
 			ticket = request.POST.get('ticket', '').strip()
 			if not ticket:
-				errors['ticket'] = u"Номер квитка є обов'язковим"
+				errors['ticket'] = _(u"Ticket number is required")
 			else:
 				data['ticket'] = ticket
 
 			student_group = request.POST.get('student_group', '').strip()
 			if not student_group:
-				errors['student_group'] = u"Оберіть групу для студента"
+				errors['student_group'] = _(u"Choose group for student")
 			else:
 				groups = Group.objects.filter(pk=student_group)
 				if len(groups) != 1:
-					errors['student_group'] = u"Оберіть коректну групу"
+					errors['student_group'] = _(u"Choose correct group")
 				else:
 					data['student_group'] = groups[0]
 
@@ -102,20 +101,20 @@ def students_add(request):
 				try:
 					image = Image.open(photo)
 					if image.format not in ('JPG', 'PNG', 'JPEG'):
-						errors['photo'] = u"Формат файла некоректний, має бути jpg або png"
+						errors['photo'] = _(u"File format incorrect, must be jpg or png")
 					elif photo.size > 2*1024*1024:
-						errors['photo'] = u"Розмір файлу більше 2 Мб"
+						errors['photo'] = _(u"File size greater than 2 Mb")
 					else:
 						data['photo'] = photo
 				except Exception:
-					errors['photo'] = u"Це не файл зображення"
+					errors['photo'] = _(u"It's not an image file")
 					
 			# save student
 			if not errors:
 				student = Student(**data)
 				student.save()
 				#redirect user to students list
-				messages.success(request, u'Студент %s успішно доданий' % student.last_name)
+				messages.success(request, _(u'Student %s is added successfully') % student.last_name)
 				return HttpResponseRedirect(reverse('home') )
 			else:
 				# render form with errors and previous user input
@@ -124,7 +123,7 @@ def students_add(request):
 		
 		elif request.POST.get('cancel_button') is not None:
 			# redirect to home page on cancel button
-			messages.warning(request, u'Додавання студента скасовано!')
+			messages.warning(request, _(u'Adding of student is canceled!'))
 			return HttpResponseRedirect(reverse('home'))
 	else:
 		# initial form render
@@ -150,38 +149,38 @@ class StudentUpdateForm(ModelForm):
 		# set form field properties
 		self.helper.help_text_inline = True
 		self.helper.html5_required = True
-		self.helper.label_class = 'col-sm-2 control-label'
-		self.helper.field_class = 'col-sm-10 input-form'
+		self.helper.label_class = 'col-sm-3 control-label'
+		self.helper.field_class = 'col-sm-6 input-form'
 
 		# add calendar icon to birthday input field
 		self.helper.layout[3] = AppendedText("birthday", '<span class="glyphicon glyphicon-calendar"></span>', active=True)
 
 		# add buttons
-		self.helper.add_input(Submit('add_button', u'Зберегти', css_class="btn btn-primary"))
-		self.helper.add_input(Submit('cancel_button', u'Скасувати', css_class="btn btn-link"))
+		self.helper.add_input(Submit('add_button', _(u'Save'), css_class="btn btn-primary"))
+		self.helper.add_input(Submit('cancel_button', _(u'Cancel'), css_class="btn btn-link"))
 
 	def clean_student_group(self):
 	
 		groups = Group.objects.filter(leader=self.instance)
 		if len(groups) > 0 and self.cleaned_data['student_group'] != groups[0]:
-			raise ValidationError(u'Студент є старостою іншої групи', code='invalid')
+			raise ValidationError(_(u'Student is a leader of another group'), code='invalid')
 		return self.cleaned_data['student_group']
 
 class StudentUpdateView(SuccessMessageMixin, UpdateView):
 	model = Student
 	template_name = 'students/students_edit.html'
 	form_class = StudentUpdateForm
-	success_message = u"Студент %(calc_last_name)s успішно збережений"
-
+	#success_message = _(u"Student %(calc_last_name)s is saved successfully!")
+	
 	def get_success_url(self):
 		return reverse('home')
 
 	def get_success_message(self, cleaned_data):
-		return self.success_message % dict(cleaned_data, calc_last_name=self.object.last_name,)
-
+		return _(u"Student %(calc_last_name)s is saved successfully!") % dict(cleaned_data, calc_last_name=self.object.last_name,)
+				 
 	def post(self, request, *args, **kwargs):
 		if request.POST.get('cancel_button'):
-			messages.warning(request, u'Редагування студента <%s> скасовано!' % request.POST['last_name'])
+			messages.warning(request, _(u'Edit of student <%s> cancel!') % request.POST['last_name'])
 			return HttpResponseRedirect(reverse('home'))
 		else:
 			return super(StudentUpdateView, self).post(request, *args, **kwargs)
@@ -194,10 +193,10 @@ def students_delete(request, pk):
 	if request.method == 'POST':
 		if request.POST.get('delete_button') is not None:
 			del_student.delete()
-			messages.success(request, u'Студента %s успішно видалено' % del_student.last_name)
+			messages.success(request, _(u'Student %s is deleted successfully') % del_student.last_name)
 			return HttpResponseRedirect(reverse('home'))
 		else:
-			messages.warning(request, u'Видалення студента %s відмінено' % del_student.last_name)
+			messages.warning(request, _(u'Delete of student %s is canceled') % del_student.last_name)
 			return HttpResponseRedirect(reverse('home'))
 	else:
 		return render(request, 'students/students_confirm_delete.html', {'del_student':del_student})	

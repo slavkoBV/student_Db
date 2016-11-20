@@ -60,8 +60,8 @@ class GroupUpdateForm(ModelForm):
 		# set form field properties
 		self.helper.help_text_inline = True
 		self.helper.html5_required = True
-		self.helper.label_class = 'col-sm-2 control-label'
-		self.helper.field_class = 'col-sm-10'
+		self.helper.label_class = 'col-sm-3 control-label'
+		self.helper.field_class = 'col-sm-6'
 
 		# add buttons
 		self.helper.add_input(Submit('add_button', u'Зберегти', css_class="btn btn-primary"))
