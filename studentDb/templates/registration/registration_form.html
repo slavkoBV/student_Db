@@ -1,0 +1,54 @@
+{% extends "students/base.html" %}
+
+{% load i18n %}
+
+{% block meta_title %}{% trans "Registration Form" %}{% endblock meta_title %}
+
+{% block title %}{% trans "Registration Form" %}{% endblock title %}
+
+{% block status_message %}
+	{% if form.errors %}
+		<div class="alert alert-warning" role="alert">
+			{% trans "Please correct the following errors" %}
+			{{ form.non_field_errors }}
+		</div>
+	{% endif %}
+{% endblock status_message %}
+
+{% block content %}
+	<div class="col-xs-10">
+		<form action="{% url "users:registration_register" %}" method="post">
+			
+			{% csrf_token %}
+			<input type="hidden" name="next" value="{% url "home" %}"/>
+			
+			<div class="form-group">
+				<label for="login">{% trans "Your username" %}</label>
+				<input type="text" class="form-control" id="login" value="" name="username"/>
+				<span class="help-block">{{ form.errors.username.as_text }}</span>
+			</div>
+
+
+			<div class="form-group">
+				<label for="email">{% trans "Your E-mail" %}</label>
+				<input type="text" class="form-control" id="email" value="" name="email"/>
+				<span class="help-block">{{ form.errors.email.as_text }}</span>
+			</div>
+
+			<div class="form-group">
+				<label for="password">{% trans "Your password" %}</label>
+				<input type="password" class="form-control" id="password" value="" name="password1"/>
+				<span class="help-block">{{ form.errors.password1.as_text }}</span>
+			</div>
+
+			<div class="form-group">
+				<label for="password-confirm">{% trans "Confirm password" %}</label>
+				<input type="password" class="form-control" id="password-confirm" value="" name="password2"/>
+				<span class="help-block">{{ form.errors.password2.as_text }}</span>
+			</div>
+
+			<button type="submit" class="btn btn-primary">{% trans "Register" %}</button>
+		</form>
+
+	</div>
+{% endblock content %}

@@ -2,6 +2,8 @@
 
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.views.generic.base import RedirectView
 from students.views import students, groups, exams, contact_admin
 from students.views.students import StudentUpdateView
 from students.views.groups import GroupUpdateView
@@ -10,8 +12,20 @@ from students.views.journal import JournalView
 from .settings import DEBUG, MEDIA_ROOT
 from django.views.static import serve
 
+
+js_info_dict = {
+  'packages': ('students',),
+}
  
 urlpatterns = [
+
+    # User Related urs:
+    url(r'^users/logout/$', auth_views.logout, kwargs={'next_page':'home'},
+          name='auth_logout'),
+    url(r'^register/complete/$', RedirectView.as_view(pattern_name='home'),
+          name='registration_complete'),
+    url(r'^users/', include('registration.backends.simple.urls', namespace='users')),
+    
     # Students url patterns:
     url(r'^$', students.student_list, name='home'),
   	url(r'^students/add/$', students.students_add, name='students_add'),
@@ -36,6 +50,8 @@ urlpatterns = [
     url(r'^contact-admin/$', contact_admin.contact_admin, name='contact_admin'),
 
     url(r'^admin/', include(admin.site.urls)),
+
+    url(r'^jsi18n\.js$', 'django.views.i18n.javascript_catalog', js_info_dict),
 ]
 
 if DEBUG:

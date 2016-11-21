@@ -67,7 +67,7 @@ function initEditStudentPage(){
 			'type': 'get',
 			'success': function(data, status, xhr){
 				if(status != 'success'){
-					alert('Помилка на сервері!');
+					alert(gettext('Server error. Please try again later'));
 					return false;
 				}
 				var modal = $('#myModal'),
@@ -80,7 +80,7 @@ function initEditStudentPage(){
 				modal.modal('show');
 			},
 			'error': function(){
-				alert('Помилка на сервері');
+				alert(gettext('Server error. Please try again later'));
 				return false;
 			}
 		});
@@ -96,14 +96,14 @@ function initEditStudentForm(form, modal){
 		modal.find('.modal-body').html(html.find('.alert'));
 		setTimeout(function(){
 					location.reload(true);
-				}, 500);
+				}, 700);
 		return false;
 	});
 
 	form.ajaxForm({
 		'dataType': 'html',
 		'error': function(){
-			alert('Помилка на сервері');
+			alert(gettext('Server error. Please try again later'));
 			return false;
 		},
 		'success': function(data, status, xhr){
@@ -115,7 +115,7 @@ function initEditStudentForm(form, modal){
 			} else {
 				setTimeout(function(){
 					location.reload(true);
-				}, 500);
+				}, 700);
 			}
 		}
 	});

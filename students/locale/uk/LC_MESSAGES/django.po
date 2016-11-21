@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-20 08:40+0000\n"
+"POT-Creation-Date: 2016-11-20 13:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: models/students.py:8
+msgid "Student"
+msgstr "Студент"
+
+#: models/students.py:9 templates/students/base.html:38
+#: templates/students/students_list.html:7
+#: templates/students/students_list.html:9
+msgid "Students"
+msgstr "Студенти"
+
+#: models/students.py:14 
+msgid "First Name"
+msgstr "Ім'я"
+
+#: templates/students/students_list.html:41
+msgid "First name"
+msgstr "Ім'я"
+
+#: models/students.py:19 
+msgid "Last Name"
+msgstr "Прізвище"
+
+#: templates/students/students_list.html:27
+msgid "Last name"
+msgstr "Прізвище"
+
+#: models/students.py:24
+msgid "Middle Name"
+msgstr "По-батькові"
+
+#: models/students.py:29
+msgid "Birthday"
+msgstr "День народження"
+
+#: models/students.py:33
+msgid "Group"
+msgstr "Група"
+
+#: models/students.py:40 templates/students/students_list.html:23
+msgid "Photo"
+msgstr "Фото"
+
+#: models/students.py:45
+msgid "Ticket"
+msgstr "Білет"
+
+#: models/students.py:49
+msgid "Additional Notes"
+msgstr "Додаткові нотатки"
 
 #: templates/students/base.html:11
 msgid "Students Accounting Service "
@@ -34,11 +84,6 @@ msgstr "Група:"
 #: templates/students/base.html:26
 msgid "All students"
 msgstr "Усі студенти"
-
-#: templates/students/base.html:38 templates/students/students_list.html:7
-#: templates/students/students_list.html:9
-msgid "Students"
-msgstr "Студенти"
 
 #: templates/students/base.html:39
 msgid "Groups"
@@ -77,18 +122,6 @@ msgstr "Ні"
 #: templates/students/students_list.html:13
 msgid "Add Student"
 msgstr "Додати Студента"
-
-#: templates/students/students_list.html:23
-msgid "Photo"
-msgstr "Фото"
-
-#: templates/students/students_list.html:27
-msgid "Last name"
-msgstr "Прізвище"
-
-#: templates/students/students_list.html:41
-msgid "First name"
-msgstr "Ім'я"
 
 #: templates/students/students_list.html:52
 msgid "ticket"

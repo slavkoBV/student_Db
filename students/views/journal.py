@@ -45,7 +45,7 @@ class JournalView(TemplateView):
 		number_of_days = monthrange(myear, mmonth)[1]
 
 		context['month_header'] = [{'day': d,
-			'verbose': day_abbr[weekday(myear, mmonth, d)][:2]}
+			'verbose': day_abbr[weekday(myear, mmonth, d)][:3]}
 			for d in range(1, number_of_days+1)]
 		current_group = get_current_group(self.request)
 		if kwargs.get('pk'):
