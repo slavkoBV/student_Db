@@ -60,6 +60,9 @@ ROOT_URLCONF = 'studentDb.urls'
 
 REGISTRAION_OPEN = True
 
+LOGIN_URL = 'users:auth_login'
+LOGOUT_URL = 'users:auth_logout'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

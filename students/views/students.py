@@ -11,6 +11,8 @@ from PIL import Image
 from django.forms import ModelForm, ValidationError
 from django.views.generic import UpdateView, DeleteView
 from django.utils.translation import ugettext as _
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -44,6 +46,7 @@ def student_list(request):
 	return render(request, 'students/students_list.html', context)
 
 # Add new Student #################################################################
+@login_required
 def students_add(request):
 	groups = Group.objects.all().order_by('title')
 	# if form was posted
@@ -170,8 +173,11 @@ class StudentUpdateView(SuccessMessageMixin, UpdateView):
 	model = Student
 	template_name = 'students/students_edit.html'
 	form_class = StudentUpdateForm
-	#success_message = _(u"Student %(calc_last_name)s is saved successfully!")
-	
+		
+	@method_decorator(login_required)
+	def dispatch(self, *args, **kwargs):
+		return super(StudentUpdateView, self).dispatch(*args, **kwargs)
+
 	def get_success_url(self):
 		return reverse('home')
 
@@ -186,6 +192,7 @@ class StudentUpdateView(SuccessMessageMixin, UpdateView):
 			return super(StudentUpdateView, self).post(request, *args, **kwargs)
 
 # Student Delete View ########################################################################
+@login_required
 def students_delete(request, pk):
 
 	del_student = Student.objects.get(id=pk)

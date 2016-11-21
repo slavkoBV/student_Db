@@ -27,7 +27,9 @@ th, td {
 }
 
 #group-selector {
-	margin-top: 30px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	min-width: 200px;
 }
 #group-selector select {
 	width: 70%;
@@ -108,6 +110,6 @@ th.day-header {
 }
 
 #user-toolbar {
-	/*margin-top: 30px;*/
+	margin-top: 30px;
 	text-align: right;
 }

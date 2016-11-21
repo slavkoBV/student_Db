@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib import messages
+from django.contrib.auth.decorators import permission_required
 
 from studentDb.settings import ADMIN_EMAIL
 
@@ -50,6 +51,7 @@ class ContactForm(forms.Form):
 		max_length=2560,
 		widget=forms.Textarea)
 
+@permission_required('auth.add_user')
 def contact_admin(request):
 	if request.method == 'POST':
 		form = ContactForm(request.POST)
