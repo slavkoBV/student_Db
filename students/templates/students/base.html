@@ -25,7 +25,7 @@
 			{% if user.is_authenticated %}
 				<!-- User's toolbar for authenticated users-->
 				<div class="col-xs-4" id="user-toolbar">
-					<span><i>{{ user.username }}:</i> {{ user.last_name }}</span> |
+					<a href="{% url "profile" %}">{{ user.username }}: {{ user.last_name }}</a> |
 					<a href="{% url "users:auth_logout" %}">{% trans "Logout" %}</a>
 				</div>
 
@@ -44,10 +44,14 @@
 				<ul class="nav nav-tabs">
 				{% url "home" as home	%}				
 				  <li {% if request.path == home %}class="active"{% endif %}><a href="{% url "home" %}">{% trans "Students" %}</a></li>
-				  <li {% if "groups" in request.path %}class="active"{% endif %}><a href="{% url "groups" %}">{% trans "Groups" %}</a></li>
-				  <li {% if "exams" in request.path %}class="active"{% endif %}><a href="{% url "exams" %}">{% trans "Exams" %}</a></li>
-				  <li {% if "journal" in request.path %}class="active"{% endif %}><a href="{% url "journal" %}">{% trans "Journal" %}</a></li>
-				  <li {% if "contact-admin" in request.path %}class="active"{% endif %}><a href="{% url "contact_admin" %}">{% trans "Contact" %}</a></li>
+				  {% if user.is_authenticated %}
+				  	<li {% if "groups" in request.path %}class="active"{% endif %}><a href="{% url "groups" %}">{% trans "Groups" %}</a></li>
+				  	<li {% if "exams" in request.path %}class="active"{% endif %}><a href="{% url "exams" %}">{% trans "Exams" %}</a></li>
+				   	<li {% if "journal" in request.path %}class="active"{% endif %}><a href="{% url "journal" %}">{% trans "Journal" %}</a></li>
+				  {% endif %}
+				  {% if perms.auth.add_user %}
+					  <li {% if "contact-admin" in request.path %}class="active"{% endif %}><a href="{% url "contact_admin" %}">{% trans "Contact" %}</a></li>
+				  {% endif %}
 				</ul>
 			</div>
 			<!--Main Content-->
@@ -66,7 +70,9 @@
 					<h2>{% block title %}{% endblock title %}</h2>
 				</div>
 				<div class="col-xs-3">
+				{% if user.is_authenticated %}
 					{% block add_New %}{% endblock add_New %}
+				{% endif %}
 				</div>
 		
 				<div class="col-xs-3" id="group-selector">

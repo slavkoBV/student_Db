@@ -1,0 +1,43 @@
+{% extends "students/base.html" %}
+
+{% load i18n %}
+
+{% block meta_title %}{{ user.get_full_name|default:user.username }}{% endblock meta_title %}
+
+{% block title %}{{ user.get_full_name|default:user.username }}{% endblock title %}
+
+
+{% block content %}
+<div class="col-xs-12">
+<div class="col-xs-8"><p>Профіль | <a href="{% url "profile_edit" user.id %}">Редагувати</a> </p></div>
+
+	<table class="table table-striped">
+		{% if user.email %}
+		<tr>
+			<td>{% trans "Username" %}:</td>
+			<td>{{user.username}}</td>
+		</tr>
+		{% endif %}
+		{% if user.email %}
+		<tr>
+			<td>{% trans "Your E-mail" %}:</td>
+			<td>{{user.email}}</td>
+		</tr>
+		{% endif %}
+		{% if user.stprofile.mobile_phone %}
+		<tr>
+			<td>{% trans "Mobile Phone" %}:</td>
+			<td>{{ user.stprofile.mobile_phone }}</td>
+		</tr>
+		{% endif %}
+		{% if user.date_joined %}
+		<tr>
+			<td>{% trans "Joined" %}:</td>
+			<td>{{user.date_joined}}</td>
+		</tr>
+		{% endif %}
+
+	</table>
+</div>
+
+{% endblock content %}

@@ -3,12 +3,14 @@
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from django.views.generic.base import RedirectView
+from django.contrib.auth.decorators import login_required
+from django.views.generic.base import RedirectView, TemplateView
 from students.views import students, groups, exams, contact_admin
 from students.views.students import StudentUpdateView
 from students.views.groups import GroupUpdateView
 from students.views.exams import ExamUpdateView
 from students.views.journal import JournalView
+from studentDb.views import editProfileView
 from .settings import DEBUG, MEDIA_ROOT
 from django.views.static import serve
 
@@ -19,7 +21,10 @@ js_info_dict = {
  
 urlpatterns = [
 
-    # User Related urs:
+    # User Related urls:
+    url(r'^users/profile/(?P<pk>\d+)/edit/$', editProfileView.as_view(), name='profile_edit'),
+    url(r'^users/profile/$', login_required(TemplateView.as_view(template_name='registration/profile.html')),
+      name='profile'),
     url(r'^users/logout/$', auth_views.logout, kwargs={'next_page':'home'},
           name='auth_logout'),
     url(r'^register/complete/$', RedirectView.as_view(pattern_name='home'),
@@ -33,9 +38,9 @@ urlpatterns = [
   	url(r'^students/(?P<pk>\d+)/delete/$', students.students_delete, name='students_delete'),
 
     # Groups url patterns:
-    url(r'^groups$', groups.group_list, name='groups'),
-    url(r'^groups/(?P<pk>\d+)/edit/$', GroupUpdateView.as_view(), name='groups_edit'),
-  	url(r'^groups/(?P<pk>\d+)/delete/$', groups.groups_delete, name='groups_delete'),
+    url(r'^groups$', login_required(groups.group_list), name='groups'),
+    url(r'^groups/(?P<pk>\d+)/edit/$', login_required(GroupUpdateView.as_view()), name='groups_edit'),
+  	url(r'^groups/(?P<pk>\d+)/delete/$', login_required(groups.groups_delete), name='groups_delete'),
 
   	# Exams url patterns:
   	url(r'^exams$', exams.exams_list, name='exams'),

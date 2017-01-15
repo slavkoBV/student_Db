@@ -39,14 +39,16 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'crispy_forms',
     'registration',
-    'students'
+    'students',
+    'studentDb',
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE_CLASSES = (
+    'studentDb.middleware.RequestTimeMiddleware',# custom middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',    
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -82,8 +84,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'studentDb.wsgi.application'
-
-
 
 try:
     from studentDb.db_settings import *
